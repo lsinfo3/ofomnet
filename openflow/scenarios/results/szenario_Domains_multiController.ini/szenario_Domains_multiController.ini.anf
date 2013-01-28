@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<scave:Analysis xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:scave="http://www.omnetpp.org/omnetpp/scave">
+  <inputs>
+    <inputs name="/openflow/scenarios/results/szenario_Domains_multiController.ini/szenario_Domains_*.ini-*.vec"/>
+    <inputs name="/openflow/scenarios/results/szenario_Domains_multiController.ini/szenario_Domains_*.ini-*.sca"/>
+  </inputs>
+  <datasets>
+    <datasets name="RTT_Analysis">
+      <items xsi:type="scave:Add" filterPattern="name(rtt:stats:mean) "/>
+      <items xsi:type="scave:BarChart" name="All locations">
+        <properties name="Bar.Placement" value="Stacked"/>
+        <groupByFields>measurement</groupByFields>
+        <barFields>module</barFields>
+        <averagedFields>replication</averagedFields>
+      </items>
+      <items xsi:type="scave:BarChart" name="Only specific location">
+        <filters xsi:type="scave:Select" filterPattern="attr:ctrlLocation(7) "/>
+        <groupByFields>measurement</groupByFields>
+        <barFields>module</barFields>
+        <averagedFields>replication</averagedFields>
+      </items>
+      <items xsi:type="scave:BarChart" name="Several locations">
+        <filters xsi:type="scave:Select" filterPattern="attr:ctrlLocation(15) OR attr:ctrlLocation(16) OR attr:ctrlLocation(17) OR attr:ctrlLocation(18)"/>
+        <properties name="Bar.Placement" value="Stacked"/>
+        <groupByFields>measurement</groupByFields>
+        <barFields>module</barFields>
+        <averagedFields>replication</averagedFields>
+      </items>
+    </datasets>
+  </datasets>
+  <chartSheets>
+    <chartSheets name="default" charts="//@datasets/@datasets.0/@items.1 //@datasets/@datasets.0/@items.2 //@datasets/@datasets.0/@items.3"/>
+  </chartSheets>
+</scave:Analysis>
