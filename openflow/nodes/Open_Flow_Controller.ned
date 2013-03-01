@@ -67,7 +67,7 @@ module Open_Flow_Controller
         }
         tcp: <tcpType> like ITCP {
             parameters:
-                @display("p=186,141");
+                @display("p=169,154");
         }
         networkLayer: NetworkLayer {
             parameters:
@@ -82,7 +82,7 @@ module Open_Flow_Controller
                 @display("p=113,376,row,90;q=txQueue");
         }
         ofa_controller: OFA_controller {
-            @display("p=170,54");
+            @display("p=169,54");
             serviceTime = serviceTime;
         }
         ctrlApp: <behavior> like CtrlBehavior {

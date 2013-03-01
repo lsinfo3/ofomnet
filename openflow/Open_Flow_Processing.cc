@@ -29,10 +29,12 @@ void Open_Flow_Processing::initialize()
     flow_table = check_and_cast<Flow_Table *>(ITModule);
     cModule *ITModule2 = getParentModule()->getSubmodule("buffer");
     buffer = check_and_cast<Buffer *>(ITModule2);
-    cModule *ITModule3 = getParentModule()->getSubmodule("notificationBoard");
-    nb = check_and_cast<NotificationBoard *>(ITModule3);
-    nb->subscribe(this, NF_FLOOD_PACKET);
-    nb->subscribe(this, NF_SEND_PACKET);
+
+    NF_NO_MATCH_FOUND = registerSignal("NF_NO_MATH_FOUND");
+
+    getParentModule()->subscribe("NF_SEND_PACKET",this);
+    getParentModule()->subscribe("NF_FLOOD_PACKET",this);
+
 
     WATCH_VECTOR(port_vector);
     // By default, all ports are enabled
@@ -164,22 +166,22 @@ void Open_Flow_Processing::disablePorts(vector<int> ports)
                        EV <<"queue in buffer" << endl;
                        drop(data_msg);
                        buffer->push(frameBeingReceived);
-                       nb->fireChangeNotification(NF_NO_MATCH_FOUND, NULL);
+                       emit(NF_NO_MATCH_FOUND, NULL);
                    }
 
 
           }
  }
 
- void Open_Flow_Processing::receiveChangeNotification(int category, const cPolymorphic* details)
+ void Open_Flow_Processing::receiveSignal(cComponent *src, simsignal_t id, cObject *obj)
  {
      Enter_Method_Silent();
      //printNotificationBanner(category, details);
 
-     if (category==NF_FLOOD_PACKET)
+     if (id==NF_FLOOD_PACKET)
      {
          //flood packet
-             OF_Wrapper *wrapper = (OF_Wrapper *) details;
+             OF_Wrapper *wrapper = (OF_Wrapper *) obj;
              uint32_t buffer_id = wrapper->buffer_id;
              EV << "Processing buffer-id: " << buffer_id << endl;
              EthernetIIFrame *frame;
@@ -206,10 +208,10 @@ void Open_Flow_Processing::disablePorts(vector<int> ports)
              delete frame;
 
      }
-     if (category==NF_SEND_PACKET)
+     if (id==NF_SEND_PACKET)
      {
          // send packet on outport port
-         OF_Wrapper *wrapper = (OF_Wrapper *) details;
+         OF_Wrapper *wrapper = (OF_Wrapper *) obj;
          uint32_t buffer_id = wrapper->buffer_id;
          uint16_t outport = wrapper->outport;
          EthernetIIFrame *frame;

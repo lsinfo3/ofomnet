@@ -14,28 +14,26 @@
 #include <ARPPacket_m.h>
 #include "Flow_Table.h"
 #include "Buffer.h"
-#include "NotificationBoard.h"
 #include "OF_Wrapper.h"
 #include "TCPCommand_m.h"
 #include "IPv4Datagram.h"
 #include <vector>
 #include "INotifiable.h"
 
-class Open_Flow_Processing : public cSimpleModule, public INotifiable
+class Open_Flow_Processing : public cSimpleModule, public cListener
 {
 public:
     void disablePorts(std::vector<int> ports);
     Open_Flow_Processing();
     ~Open_Flow_Processing();
+    void receiveSignal(cComponent *src, simsignal_t id, cObject *obj);
 
 protected:
     Flow_Table *flow_table;
     Buffer *buffer;
-    NotificationBoard *nb;
 
     virtual void initialize();
     virtual void handleMessage(cMessage *msg);
-    virtual void receiveChangeNotification(int category, const cPolymorphic *details);
     void sendPacketOut();
     void processQueuedMsg(cMessage *data_msg);
 
@@ -48,6 +46,7 @@ private:
     bool busy;
     std::list<cMessage *> msg_list;
     double serviceTime;
+    simsignal_t NF_NO_MATCH_FOUND;
 };
 
 

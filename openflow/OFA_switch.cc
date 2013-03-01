@@ -33,12 +33,16 @@ void OFA_switch::initialize()
 {
     cModule *ITModule = getParentModule()->getSubmodule("buffer");
     buffer = check_and_cast<Buffer *>(ITModule);
-    cModule *ITModule2 = getParentModule()->getSubmodule("notificationBoard");
-    nb = check_and_cast<NotificationBoard *>(ITModule2);
-    nb->subscribe(this, NF_NO_MATCH_FOUND);
+
+
+    getParentModule()->subscribe("NF_NO_MATCH_FOUND",this);
+
     cModule *ITModule3 = getParentModule()->getSubmodule("flow_Table");
     flow_table = check_and_cast<Flow_Table *>(ITModule3);
 
+
+    NF_FLOOD_PACKET = registerSignal("NF_FLOOD_PACKET");
+    NF_SEND_PACKET = registerSignal("NF_SEND_PACKET");
 
 
     const char *address = par("address");
@@ -126,17 +130,19 @@ void OFA_switch::handleFeaturesRequestMessage(Open_Flow_Message *of_msg)
     socket.send(featuresReply);
 }
 
-void OFA_switch::receiveChangeNotification(int category, const cPolymorphic* details)
+void OFA_switch::receiveSignal(cComponent *src, simsignal_t id, cObject *obj)
 {
     Enter_Method_Silent();
     //printNotificationBanner(category, details);
 
-// no matching entry found in flow table
-    if (category==NF_NO_MATCH_FOUND)
+    // no matching entry found in flow table
+    if (id == NF_NO_MATCH_FOUND)
     {
         handlePacket();
     }
 }
+
+
 // handle unmatched packets and send packet-in message to controller
 void OFA_switch::handlePacket()
 {
@@ -253,12 +259,12 @@ void OFA_switch::execute_packet_out_action(ofp_action_header *action, uint32_t b
     wrapper->buffer_id = buffer_id;
     if (outport == OFPP_FLOOD)
     {
-        nb->fireChangeNotification(NF_FLOOD_PACKET, wrapper);
+        emit(NF_FLOOD_PACKET, wrapper);
     }
     else
     {
         wrapper->outport = outport;
-        nb->fireChangeNotification(NF_SEND_PACKET, wrapper);
+        emit(NF_SEND_PACKET, wrapper);
     }
 
 }
@@ -276,12 +282,12 @@ void OFA_switch::execute_packet_out_action(ofp_action_header *action, EthernetII
     if (outport == OFPP_FLOOD)
     {
         EV << "outport==ofpp_flood" << endl;
-        nb->fireChangeNotification(NF_FLOOD_PACKET, wrapper);
+        emit(NF_FLOOD_PACKET, wrapper);
     }
     else
     {
         wrapper->outport = outport;
-        nb->fireChangeNotification(NF_SEND_PACKET, wrapper);
+        emit(NF_SEND_PACKET, wrapper);
     }
     //    }
 

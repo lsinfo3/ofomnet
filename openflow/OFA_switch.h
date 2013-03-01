@@ -9,21 +9,21 @@
 #define OFA_SWITCH_H_
 
 #include <omnetpp.h>
-#include <NotificationBoard.h>
 #include <Buffer.h>
 #include <INotifiable.h>
 #include "TCPSocket.h"
 #include "openflow.h"
 #include "Open_Flow_Message_m.h"
 #include "Flow_Table.h"
+#include "Open_Flow_Processing.h"
 
 
-
-class OFA_switch: public cSimpleModule, public INotifiable
+class OFA_switch: public cSimpleModule, public cListener
 {
 public:
     OFA_switch();
     ~OFA_switch();
+    void receiveSignal(cComponent *src, simsignal_t id, cObject *obj);
 
 
 
@@ -47,10 +47,12 @@ protected:
 
 private:
     Buffer *buffer;
-    NotificationBoard *nb;
     cMessage *  timeoutMsg;
     Flow_Table *flow_table;
     double timeout;
+    simsignal_t NF_FLOOD_PACKET;
+    simsignal_t NF_SEND_PACKET;
+
 };
 
 
