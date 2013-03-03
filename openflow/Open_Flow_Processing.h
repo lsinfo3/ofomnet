@@ -47,6 +47,8 @@ private:
     std::list<cMessage *> msg_list;
     double serviceTime;
     simsignal_t NF_NO_MATCH_FOUND;
+    simsignal_t NF_SEND_PACKET;
+    simsignal_t NF_FLOOD_PACKET;
 };
 
 

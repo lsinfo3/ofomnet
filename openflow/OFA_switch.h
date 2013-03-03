@@ -52,6 +52,7 @@ private:
     double timeout;
     simsignal_t NF_FLOOD_PACKET;
     simsignal_t NF_SEND_PACKET;
+    simsignal_t NF_NO_MATCH_FOUND;
 
 };
 

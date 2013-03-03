@@ -43,7 +43,7 @@ void OFA_switch::initialize()
 
     NF_FLOOD_PACKET = registerSignal("NF_FLOOD_PACKET");
     NF_SEND_PACKET = registerSignal("NF_SEND_PACKET");
-
+    NF_NO_MATCH_FOUND = registerSignal("NF_NO_MATCH_FOUND");
 
     const char *address = par("address");
     int port = par("port");

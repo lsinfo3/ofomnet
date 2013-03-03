@@ -31,6 +31,8 @@ void Open_Flow_Processing::initialize()
     buffer = check_and_cast<Buffer *>(ITModule2);
 
     NF_NO_MATCH_FOUND = registerSignal("NF_NO_MATH_FOUND");
+    NF_SEND_PACKET = registerSignal("NF_SEND_PACKET");
+    NF_FLOOD_PACKET = registerSignal("NF_FLOOD_PACKET");
 
     getParentModule()->subscribe("NF_SEND_PACKET",this);
     getParentModule()->subscribe("NF_FLOOD_PACKET",this);
