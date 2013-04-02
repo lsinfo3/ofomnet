@@ -30,7 +30,6 @@ public:
 protected:
     virtual void initialize();
     virtual void handleMessage(cMessage *msg);
-    virtual void receiveChangeNotification(int category, const cPolymorphic *details);
     void handlePacket();
     void sendPacketInMessage(EthernetIIFrame *frame,  uint32_t buffer_id,int numBytes);
     TCPSocket socket;
