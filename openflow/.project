@@ -3,7 +3,7 @@
 	<name>openflow</name>
 	<comment></comment>
 	<projects>
-		<project>inet_v2</project>
+		<project>inet</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>
