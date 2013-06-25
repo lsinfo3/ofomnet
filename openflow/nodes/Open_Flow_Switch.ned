@@ -50,7 +50,7 @@ module Open_Flow_Switch
         @node();
         @OF_Switch();
         @labels(node,ethernet-node);
-        @display("i=device/switch;i2=openflow/OpenFlow-Logo-small");
+        @display("i=device/switch;i2=OpenFlow-Logo-small");
         int numTcpApps = default(0);
         int numUdpApps = default(0);
         int numSctpApps = default(0);

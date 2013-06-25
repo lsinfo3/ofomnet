@@ -203,10 +203,7 @@ void OFA_switch::connect()
         connectAddress = getParentModule()->getParentModule()->getSubmodule("controller")->getFullPath().c_str();
     }
 
-    EV << "issuing OPEN command \n";
-
     socket.connect(IPvXAddressResolver().resolve(connectAddress), connectPort);
-
 
 }
 

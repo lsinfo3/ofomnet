@@ -21,7 +21,7 @@ simple SpanningTree
 {
     parameters:
 
-        @display("i=openflow/spanning-tree");
+        @display("i=spanning-tree");
         string NodeType = default("openflow.nodes.Open_Flow_Switch");
         int startNode = default(0);
         int domainID = default(-1);

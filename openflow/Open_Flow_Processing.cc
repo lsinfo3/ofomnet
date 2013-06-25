@@ -30,7 +30,7 @@ void Open_Flow_Processing::initialize()
     cModule *ITModule2 = getParentModule()->getSubmodule("buffer");
     buffer = check_and_cast<Buffer *>(ITModule2);
 
-    NF_NO_MATCH_FOUND = registerSignal("NF_NO_MATH_FOUND");
+    NF_NO_MATCH_FOUND = registerSignal("NF_NO_MATCH_FOUND");
     NF_SEND_PACKET = registerSignal("NF_SEND_PACKET");
     NF_FLOOD_PACKET = registerSignal("NF_FLOOD_PACKET");
 
@@ -168,7 +168,8 @@ void Open_Flow_Processing::disablePorts(vector<int> ports)
                        EV <<"queue in buffer" << endl;
                        drop(data_msg);
                        buffer->push(frameBeingReceived);
-                       emit(NF_NO_MATCH_FOUND, NULL);
+                       OF_Wrapper *dummy = new OF_Wrapper();
+                       emit(NF_NO_MATCH_FOUND, dummy);
                    }
 
 
